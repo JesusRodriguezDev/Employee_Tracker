@@ -323,25 +323,19 @@ connection.connect(function (err) {
     });
   }
   
-  function addRole(departmentChoices) {
+    function addRole() {
     inquirer
       .prompt([
         {
+          name: "title",
           type: "input",
-          name: "roleTitle",
-          message: "Role title",
+          message: "Role Title",
         },
         {
+          name: "salary",
           type: "input",
-          name: "roleSalary",
           message: "Role Salary",
-        },
-        {
-          type: "list",
-          name: "departmentId",
-          message: "Department ID",
-          choices: departmentChoices,
-        },
+        }
       ])
       .then(function (answer) {
         var query = `INSERT INTO role SET ?`;
@@ -351,7 +345,6 @@ connection.connect(function (err) {
           {
             title: answer.title,
             salary: answer.salary,
-            department_id: answer.departmentId,
           },
           function (err, res) {
             if (err) throw err;
