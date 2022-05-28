@@ -1,7 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 require("console.table");
-require('dotenv').config();
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -26,13 +25,14 @@ connection.connect(function (err) {
         message: "Select Action to Take",
         choices: [
           "View Employees",
-          "Add a Department",
           "View Roles",
+          "View Departments",
+          "Add a Department",
           "Add Employee",
           "Remove Employees",
           "Update Employee Role",
           "Add Role",
-          "End",
+          "Quit Application",
         ],
       })
       .then(function ({ task }) {
@@ -40,11 +40,14 @@ connection.connect(function (err) {
           case "View Employees":
             viewEmployee();
             break;
-          case "Add a Department":
-            addDepartment();
+          case "View Departments":
+            viewDepartments();
             break;
           case "View Roles":
             viewRoles();
+            break;
+          case "Add a Department":
+            addDepartment();
             break;
           case "Add Employee":
             addEmployee();
@@ -58,14 +61,14 @@ connection.connect(function (err) {
           case "Add Role":
             addRole();
             break;
-          case "End":
+          case "Quit Application":
             connection.end();
             break;
         }
       });
   }
   
-  //View Employee Prompt
+  //View Employee Function
   function viewEmployee() {
     console.log("Viewing employees\n");
   
@@ -83,7 +86,22 @@ connection.connect(function (err) {
       firstPrompt();
     });
   }
+ // View Departents function
+  function viewDepartments(){
+      console.log("Viewing departmentes\n");
+
+      var query = `SELECT dep.id, dep.name FROM department dep`;
+      connection.query(query, function (err, res) {
+        if (err) throw err;
+    
+        console.table(res);
+        console.log("Departments viewed!\n");
+    
+        firstPrompt();
+      });
+  }
   
+  // Add employee function
   function addEmployee() {
     console.log("Inserting an employee!");
   
