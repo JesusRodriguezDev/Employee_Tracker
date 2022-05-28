@@ -27,7 +27,7 @@ connection.connect(function (err) {
           "View Employees",
           "View Roles",
           "View Departments",
-          "Add a Department",
+          "Add Department",
           "Add Employee",
           "Remove Employees",
           "Update Employee Role",
@@ -46,7 +46,7 @@ connection.connect(function (err) {
           case "View Roles":
             viewRoles();
             break;
-          case "Add a Department":
+          case "Add Department":
             addDepartment();
             break;
           case "Add Employee":
@@ -88,7 +88,7 @@ connection.connect(function (err) {
   }
  // View Departents function
   function viewDepartments(){
-      console.log("Viewing departmentes\n");
+      console.log("Showing departments\n");
 
       var query = `SELECT dep.id, dep.name FROM department dep`;
       connection.query(query, function (err, res) {
@@ -103,10 +103,15 @@ connection.connect(function (err) {
   
   // Add employee function
   function addEmployee() {
-    console.log("Inserting an employee!");
+    console.log("Adding employee!\n");
+    console.log("These are the current employees");
   
-    var query = `SELECT r.id, r.title, r.salary 
-        FROM role r`;
+    // var query = `SELECT r.id, r.title, r.salary 
+    //     FROM role r`;
+
+    var query = `SELECT emp.id, emp.first_name, emp.last_name
+    FROM employee emp`;
+    
   
     connection.query(query, function (err, res) {
       if (err) throw err;
@@ -118,7 +123,7 @@ connection.connect(function (err) {
       }));
   
       console.table(res);
-      console.log("RoleToInsert!");
+      console.log("New Employee Info:");
   
       promptInsert(roleChoices);
     });
@@ -168,10 +173,11 @@ connection.connect(function (err) {
   }
   
   function removeEmployees() {
-    console.log("Deleting employee");
+    console.log("Deleting employee\n");
+    console.log("These are the current employees");
   
-    var query = `SELECT e.id, e.first_name, e.last_name
-        FROM employee e`;
+    var query = `SELECT emp.id, emp.first_name, emp.last_name
+        FROM employee emp`;
   
     connection.query(query, function (err, res) {
       if (err) throw err;
@@ -182,7 +188,7 @@ connection.connect(function (err) {
       }));
   
       console.table(res);
-      console.log("ArrayToDelete!\n");
+      console.log("Which Employee would you like to Delete?\n");
   
       promptDelete(deleteEmployeeChoices);
     });
@@ -204,7 +210,7 @@ connection.connect(function (err) {
           if (err) throw err;
   
           console.table(res);
-          console.log(res.affectedRows + "Deleted!\n");
+          console.log(res.affectedRows + " Employee Deleted!\n");
   
           firstPrompt();
         });
